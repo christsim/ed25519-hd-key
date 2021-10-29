@@ -9,7 +9,7 @@ const utils_1 = require("./utils");
 const assert = require('assert');
 const ED25519_CURVE = 'ed25519 seed';
 const HARDENED_OFFSET = 0x80000000;
-exports.getMasterKeyFromSeed = (seed) => {
+const getMasterKeyFromSeed = (seed) => {
     const hmac = createHmac('sha512', ED25519_CURVE);
     const I = hmac.update(Buffer.from(seed, 'hex')).digest();
     const IL = I.slice(0, 32);
@@ -19,6 +19,7 @@ exports.getMasterKeyFromSeed = (seed) => {
         chainCode: IR,
     };
 };
+exports.getMasterKeyFromSeed = getMasterKeyFromSeed;
 const CKDPriv = ({ key, chainCode }, index) => {
     const indexBuffer = Buffer.allocUnsafe(4);
     indexBuffer.writeUInt32BE(index, 0);
@@ -33,7 +34,7 @@ const CKDPriv = ({ key, chainCode }, index) => {
         chainCode: IR,
     };
 };
-exports.getPublicKey = (privateKey, withZeroByte = true) => {
+const getPublicKey = (privateKey, withZeroByte = true) => {
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
     const signPk = keyPair.secretKey.subarray(32);
     const zero = Buffer.alloc(1, 0);
@@ -41,7 +42,8 @@ exports.getPublicKey = (privateKey, withZeroByte = true) => {
         Buffer.concat([zero, Buffer.from(signPk)]) :
         Buffer.from(signPk);
 };
-exports.isValidPath = (path) => {
+exports.getPublicKey = getPublicKey;
+const isValidPath = (path) => {
     if (!utils_1.pathRegex.test(path)) {
         return false;
     }
@@ -51,11 +53,12 @@ exports.isValidPath = (path) => {
         .map(utils_1.replaceDerive)
         .some(isNaN);
 };
-exports.derivePath = (path, seed, offset = HARDENED_OFFSET) => {
-    if (!exports.isValidPath(path)) {
+exports.isValidPath = isValidPath;
+const derivePath = (path, seed, offset = HARDENED_OFFSET) => {
+    if (!(0, exports.isValidPath)(path)) {
         throw new Error('Invalid derivation path');
     }
-    const { key, chainCode } = exports.getMasterKeyFromSeed(seed);
+    const { key, chainCode } = (0, exports.getMasterKeyFromSeed)(seed);
     const segments = path
         .split('/')
         .slice(1)
@@ -63,6 +66,7 @@ exports.derivePath = (path, seed, offset = HARDENED_OFFSET) => {
         .map(el => parseInt(el, 10));
     return segments.reduce((parentKeys, segment) => CKDPriv(parentKeys, segment + offset), { key, chainCode });
 };
+exports.derivePath = derivePath;
 const BIP32_PRIVATE_VERSION = 0x0488ADE4;
 const LEN = 78;
 function serialize(hdkey, version, key) {
@@ -101,7 +105,7 @@ class HDKey {
     set prvKey(value) {
         assert.equal(value.length, 32, 'Private key must be 32 bytes.');
         this._privateKey = value;
-        this._publicKey = exports.getPublicKey(this._privateKey);
+        this._publicKey = (0, exports.getPublicKey)(this._privateKey);
         this._identifier = hash160(this._publicKey);
         this._fingerprint = this._identifier.slice(0, 4).readUInt32BE(0);
     }
@@ -112,7 +116,7 @@ class HDKey {
         return null;
     }
     static fromMasterSeed(seed, version = BIP32_PRIVATE_VERSION) {
-        const { key, chainCode } = exports.getMasterKeyFromSeed(seed);
+        const { key, chainCode } = (0, exports.getMasterKeyFromSeed)(seed);
         const hdkey = new HDKey(version);
         hdkey.prvKey = key;
         hdkey.chainCode = chainCode;
