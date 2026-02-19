@@ -1,4 +1,4 @@
-import createHmac from 'create-hmac';
+import * as createHmac from 'create-hmac';
 import * as nacl from 'tweetnacl';
 import * as bs58check from 'bs58check';
 import * as crypto from 'crypto';
