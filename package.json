@@ -1,6 +1,6 @@
 {
   "name": "hd-key-ed25519",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "BIP-0032 like derivation for ed25519 curve",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc -p ./",
-    "test": "mocha --require tsx/cjs tests/*.test.ts"
+    "test": "npm run build && mocha --require tsx/cjs tests/*.test.ts"
   },
   "keywords": [
     "ed25519",
