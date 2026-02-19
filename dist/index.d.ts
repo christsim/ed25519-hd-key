@@ -1,7 +1,8 @@
 /// <reference types="node" />
-declare type Hex = string;
-declare type Path = string;
-declare type Keys = {
+/// <reference types="node" />
+type Hex = string;
+type Path = string;
+type Keys = {
     key: Buffer;
     chainCode: Buffer;
 };
@@ -22,6 +23,7 @@ export default class HDKey {
     constructor(version?: number);
     get privateKey(): Buffer;
     get publicKey(): Buffer;
+    get publicKeyWithZeroByte(): Buffer;
     private set prvKey(value);
     get privateExtendedKey(): any;
     static fromMasterSeed(seed: Hex, version?: number): HDKey;

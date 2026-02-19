@@ -1,4 +1,4 @@
-import * as createHmac from 'create-hmac';
+import createHmac from 'create-hmac';
 import * as nacl from 'tweetnacl';
 import * as bs58check from 'bs58check';
 import * as crypto from 'crypto';
@@ -50,7 +50,7 @@ const CKDPriv = ({ key, chainCode }: Keys, index: number): Keys => {
     };
 };
 
-export const getPublicKey = (privateKey: Buffer, withZeroByte = true): Buffer => {
+export const getPublicKey = (privateKey: Buffer, withZeroByte = false): Buffer => {
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
     const signPk = keyPair.secretKey.subarray(32);
     const zero = Buffer.alloc(1, 0);
@@ -134,6 +134,10 @@ export default class HDKey {
 
     public get publicKey(): Buffer {
         return this._publicKey;
+    }
+
+    public get publicKeyWithZeroByte(): Buffer {
+        return getPublicKey(this._privateKey, true);
     }
 
     private set prvKey(value: Buffer) {
