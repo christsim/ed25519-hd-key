@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.derivePath = exports.isValidPath = exports.getPublicKey = exports.getMasterKeyFromSeed = void 0;
-const createHmac = require("create-hmac");
+const create_hmac_1 = require("create-hmac");
 const nacl = require("tweetnacl");
 const bs58check = require("bs58check");
 const crypto = require("crypto");
@@ -10,7 +10,7 @@ const assert = require('assert');
 const ED25519_CURVE = 'ed25519 seed';
 const HARDENED_OFFSET = 0x80000000;
 const getMasterKeyFromSeed = (seed) => {
-    const hmac = createHmac('sha512', ED25519_CURVE);
+    const hmac = (0, create_hmac_1.default)('sha512', ED25519_CURVE);
     const I = hmac.update(Buffer.from(seed, 'hex')).digest();
     const IL = I.slice(0, 32);
     const IR = I.slice(32);
@@ -24,7 +24,7 @@ const CKDPriv = ({ key, chainCode }, index) => {
     const indexBuffer = Buffer.allocUnsafe(4);
     indexBuffer.writeUInt32BE(index, 0);
     const data = Buffer.concat([Buffer.alloc(1, 0), key, indexBuffer]);
-    const I = createHmac('sha512', chainCode)
+    const I = (0, create_hmac_1.default)('sha512', chainCode)
         .update(data)
         .digest();
     const IL = I.slice(0, 32);
@@ -34,7 +34,7 @@ const CKDPriv = ({ key, chainCode }, index) => {
         chainCode: IR,
     };
 };
-const getPublicKey = (privateKey, withZeroByte = true) => {
+const getPublicKey = (privateKey, withZeroByte = false) => {
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
     const signPk = keyPair.secretKey.subarray(32);
     const zero = Buffer.alloc(1, 0);
@@ -101,6 +101,9 @@ class HDKey {
     }
     get publicKey() {
         return this._publicKey;
+    }
+    get publicKeyWithZeroByte() {
+        return (0, exports.getPublicKey)(this._privateKey, true);
     }
     set prvKey(value) {
         assert.equal(value.length, 32, 'Private key must be 32 bytes.');

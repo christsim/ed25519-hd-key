@@ -16,27 +16,9 @@
   },
   "homepage": "https://github.com/christsim/ed25519-hd-key",
   "scripts": {
-    "prepublish": "yarn build",
+    "prepublish": "npm build",
     "build": "tsc -p ./",
-    "test": "jest"
-  },
-  "jest": {
-    "verbose": true,
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "testRegex": "(/spec/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "globals": {
-      "window": {},
-      "ts-jest": {
-        "tsConfig": "./tsconfig.json"
-      }
-    }
+    "test": "mocha --require tsx/cjs tests/*.test.ts"
   },
   "keywords": [
     "ed25519",
@@ -53,11 +35,13 @@
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
+    "@types/chai": "5.2.2",
+    "@types/mocha": "10.0.10",
     "@types/node": "^16.11.6",
-    "jest": "^27.3.1",
-    "jest-cli": "^27.3.1",
-    "ts-jest": "^27.0.7",
+    "chai": "5.2.0",
+    "mocha": "11.4.0",
+    "sinon": "20.0.0",
+    "tsx": "4.19.4",
     "typescript": "^4.4.4"
   }
 }
