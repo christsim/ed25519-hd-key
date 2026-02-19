@@ -1,6 +1,6 @@
 {
   "name": "hd-key-ed25519",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "BIP-0032 like derivation for ed25519 curve",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,8 +38,8 @@
     "@types/mocha": "10.0.10",
     "@types/node": "^16.11.6",
     "chai": "5.2.0",
-    "mocha": "11.4.0",
-    "sinon": "20.0.0",
+    "mocha": "^11.3.0",
+    "sinon": "^21.0.1",
     "tsx": "4.19.4",
     "typescript": "^4.4.4"
   }
