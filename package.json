@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/christsim/ed25519-hd-key",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run test",
     "build": "tsc -p ./",
     "test": "npm run build && mocha --require tsx/cjs tests/*.test.ts"
   },
