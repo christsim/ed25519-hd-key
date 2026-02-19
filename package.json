@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/christsim/ed25519-hd-key",
   "scripts": {
-    "prepublish": "npm build",
+    "prepublish": "npm run build",
     "build": "tsc -p ./",
     "test": "mocha --require tsx/cjs tests/*.test.ts"
   },
@@ -29,7 +29,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "bip39": "^3.0.4",
     "bs58check": "^2.1.2",
     "create-hmac": "^1.1.7",
     "tweetnacl": "^1.0.3"
