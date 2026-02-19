@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import HDKey, {derivePath, getPublicKey, isValidPath} from '../src';
+import HDKey, {derivePath, getPublicKey, isValidPath} from '../dist';
 
 describe('ED25519 HD Key', function (){
     it('can get public keys', function () {
